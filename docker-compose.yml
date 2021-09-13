@@ -45,6 +45,23 @@ services:
         networks:
             - sqlaoag
 
+    db3:
+        build: ./sql
+        depends_on:
+            - "db1"
+        environment:
+            <<: *common-variables
+            INIT_SCRIPT: "aoag_secondary.sql"
+            INIT_WAIT: 60
+        ports:
+            - "2700:1433"
+        container_name: db3
+        hostname: db3
+        volumes:
+            - mssql-server-shared:/var/opt/mssql/shared
+            - mssql-server-backup:/var/opt/mssql/backup
+        networks:
+            - sqlaoag
 
 volumes:
     mssql-server-shared:
